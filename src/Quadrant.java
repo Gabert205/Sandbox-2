@@ -83,6 +83,20 @@ public class Quadrant implements Comparable<Quadrant>{
         }
     }
 
+    public void setTopLevelToGrass(){
+
+        //for every cell - if it is on top - set to grass
+        for (Cell[] cell : cells) {
+            for (int y = cell.length - 1 ; y >= 0 ; y--) {
+
+                if (cell[y].getElementType().equals("DIRT")) {
+                    cell[y].setElement(new Grass());
+                    break;
+                }
+            }
+        }
+    }
+
     //==================================================================================================================
 
     //prints the contents of cells

@@ -3,7 +3,7 @@ import java.awt.*;
 public class Screen {
     private Game game;
     private int centerOfScreen;
-    private final double CELLSIZE = 1 / 30.;
+    public final static double CELLSIZE = 1 / 30.;
 
     public Screen(int screenWidth, int screenHeight) {
         StdDraw.setCanvasSize(screenWidth, screenHeight);
@@ -15,6 +15,8 @@ public class Screen {
                 game.addNewQuadrant(x, y);
                 if(y == 0){
                     game.getQuadrant(x, y).setAllElements(new Dirt());
+
+                    game.getQuadrant(x, y).setTopLevelToGrass();
                 }
             }
         }
@@ -55,6 +57,7 @@ public class Screen {
     //draws the entire screen
     private void draw() {
         StdDraw.clear();
+
         //for every Quadrant in game's quadrants
         for (int i = 0 ; i < game.getQuadrantsSize() ; i++) {
             Quadrant quadrant = game.getQuadrant(i);
@@ -82,6 +85,8 @@ public class Screen {
                 }
             }
         }
+
+        game.character.draw();
 
         StdDraw.show();
     }

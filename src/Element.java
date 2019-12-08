@@ -2,15 +2,18 @@ import java.awt.*;
 
 public class Element {
     private String type;
+    private String state;
     private Color color;
 
     public Element() {
         this.type = "NONE";
+        this.state = "NONE";
         this.color = new Color(0x2977CB);
     }
 
-    public Element(String type, Color color) {
+    public Element(String type, String state, Color color) {
         this.type = type;
+        this.state = state;
         this.color = color;
     }
 
@@ -38,6 +41,6 @@ public class Element {
     //==================================================================================================================
 
     public Element clone(){
-        return new Element(type, color);
+        return new Element(type, state, color);
     }
 }

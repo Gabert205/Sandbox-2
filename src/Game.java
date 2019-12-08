@@ -4,9 +4,11 @@ import java.util.List;
 
 public class Game {
     private List<Quadrant> quadrants;
+    public Character character;
 
     public Game(){
         quadrants = new ArrayList<>();
+        character = new Character(0,0);
     }
 
     //==================================================================================================================
@@ -99,5 +101,7 @@ public class Game {
 
     //==================================================================================================================
 
+    // TODO: 12/8/2019 add a method that prevents the character from crossing solid blocks 
 
+    // TODO: 12/8/2019 add character gravity 
 }
