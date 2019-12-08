@@ -27,6 +27,23 @@ public class Quadrant implements Comparable<Quadrant>{
         cells[x][y] = cell;
     }
 
+    //sets the element of the cell at (x,y)
+    public void setElement(Element element, int x, int y){
+        cells[x][y].setElement(element);
+    }
+
+    public void setAllElements(Element element){
+
+        //for every Cell in the Quadrant - set the Cell's element to the given type
+        for (Cell[] cell : cells) {
+            for (Cell value : cell) {
+
+                value.setElement(element.clone());
+            }
+        }
+    }
+
+    //checks to see if the cell should be active
     public boolean isActive(){
         // TODO: 12/7/2019 check to see if the Quadrant should be active
         return true;

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Runner {
     public static void main(String[] args) {
-        Screen screen = new Screen(100,100);
+        StdDraw.enableDoubleBuffering();
+        Screen screen = new Screen(500,500);
     }
 }

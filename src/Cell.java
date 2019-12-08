@@ -8,7 +8,7 @@ public class Cell {
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        element = null;
+        element = new Element();
     }
 
     public Cell(Element element, int x, int y) {

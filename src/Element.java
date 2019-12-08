@@ -4,9 +4,16 @@ public class Element {
     private String type;
     private Color color;
 
-    public Element(String type) {
-        this.type = type;
+    public Element() {
+        this.type = "NONE";
+        this.color = new Color(0x2977CB);
     }
+
+    public Element(String type, Color color) {
+        this.type = type;
+        this.color = color;
+    }
+
 
     //==================================================================================================================
 
@@ -29,4 +36,8 @@ public class Element {
     //endregion
 
     //==================================================================================================================
+
+    public Element clone(){
+        return new Element(type, color);
+    }
 }

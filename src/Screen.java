@@ -2,13 +2,26 @@ import java.awt.*;
 
 public class Screen {
     private Game game;
-    private int leftBound;
-    private int rightBound;
+    private int centerOfScreen;
     private final double CELLSIZE = 1 / 30.;
 
     public Screen(int screenWidth, int screenHeight) {
-        //StdDraw.setCanvasSize(screenWidth, screenHeight);
+        StdDraw.setCanvasSize(screenWidth, screenHeight);
+        centerOfScreen = 0;
         game = new Game();
+
+        for (int x = 0 ; x < 3 ; x++) {
+            for (int y = 0 ; y < 3 ; y++) {
+                game.addNewQuadrant(x, y);
+                if(y == 0){
+                    game.getQuadrant(x, y).setAllElements(new Dirt());
+                }
+            }
+        }
+
+
+
+        draw();
     }
 
     //==================================================================================================================
@@ -33,27 +46,49 @@ public class Screen {
         return y;
     }
 
+    public void setCenterOfScreen(){
+        StdDraw.setXscale(centerOfScreen - .5, centerOfScreen + .5);
+    }
+
     //==================================================================================================================
 
     //draws the entire screen
     private void draw() {
-
+        StdDraw.clear();
         //for every Quadrant in game's quadrants
         for (int i = 0 ; i < game.getQuadrantsSize() ; i++) {
             Quadrant quadrant = game.getQuadrant(i);
 
-            //if the Quadrant is active - draw it
-            if (quadrant.isActive()) {
-                // TODO: 12/7/2019 find a way to draw with functional bounds
+            //draw only is the cell is active
+            if(quadrant.isActive()) {
 
-                
+                //for every Cell in the Quadrant - draw the Cell
+                for (int x = 0 ; x < quadrant.cells.length ; x++) {
+                    for (int y = 0 ; y < quadrant.cells[x].length ; y++) {
+
+                        drawCell(getScreenX(quadrant.x, x),
+                                getScreenY(quadrant.y, y),
+                                quadrant.getCell(x, y).getColor());
+                    }
+                }
+            }
+            else{
+                //for every Cell in the Quadrant - draw the Cell as black
+                for (int x = 0 ; x < quadrant.cells.length ; x++) {
+                    for (int y = 0 ; y < quadrant.cells[x].length ; y++) {
+
+                        drawCell(getScreenX(quadrant.x, x), getScreenY(quadrant.y, y), new Color(0));
+                    }
+                }
             }
         }
+
+        StdDraw.show();
     }
 
     //draws a single Cell in pic
-    private void drawCell(int picX, int picY, Color color) {
+    private void drawCell(double picX, double picY, Color color) {
         StdDraw.setPenColor(color);
-        StdDraw.filledRectangle(picX, picY, CELLSIZE, CELLSIZE);
+        StdDraw.filledRectangle(picX, picY, CELLSIZE / 2 + .001, CELLSIZE / 2 + .001);
     }
 }
