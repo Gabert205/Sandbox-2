@@ -45,8 +45,10 @@ public class Quadrant implements Comparable<Quadrant>{
 
     //checks to see if the cell should be active
     public boolean isActive(){
-        // TODO: 12/7/2019 check to see if the Quadrant should be active
-        return true;
+        if(Screen.centerOfScreenX - 2 * Screen.VIEWSIZE <= x * QUADRANTSIZE * Screen.CELLSIZE &&
+           Screen.centerOfScreenX + Screen.VIEWSIZE >= x * QUADRANTSIZE* Screen.CELLSIZE )
+            return true;
+        else return false;
     }
 
 

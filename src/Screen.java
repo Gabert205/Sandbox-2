@@ -1,34 +1,27 @@
 import java.awt.*;
 
 public class Screen {
-    private Game game;
-    private int centerOfScreen;
-    public final static double CELLSIZE = 1 / 30.;
+    private Game game;   //the Game that holds all the gameplay
+    public static double centerOfScreenX;  //the x-value of the center of the screen
+    public static double centerOfScreenY;  //the y-value of the center of the screen
+    public static final double VIEWSIZE = .5;   //the distance that the Character can see
+    public final static double CELLSIZE = 1 / 30.;   //the size of the Cells (duh)
 
     public Screen(int screenWidth, int screenHeight) {
         StdDraw.setCanvasSize(screenWidth, screenHeight);
-        centerOfScreen = 0;
+        centerOfScreenX = 0;
+        centerOfScreenY = 0;
         game = new Game();
 
-        for (int x = 0 ; x < 3 ; x++) {
-            for (int y = 0 ; y < 3 ; y++) {
-                game.addNewQuadrant(x, y);
-                if(y == 0){
-                    game.getQuadrant(x, y).setAllElements(new Dirt());
-
-                    game.getQuadrant(x, y).setTopLevelToGrass();
-                }
-            }
-        }
-
-
-
-        draw();
+        run();
     }
 
     //==================================================================================================================
 
-    public double getScreenX(int quadrantX, int cellX){
+    //region Gets and Sets
+
+
+    private double getScreenX(int quadrantX, int cellX){
         double x = 0;
 
         x += quadrantX * (Quadrant.QUADRANTSIZE * CELLSIZE);
@@ -38,7 +31,7 @@ public class Screen {
         return x;
     }
 
-    public double getScreenY(int quadrantY, int cellY){
+    private double getScreenY(int quadrantY, int cellY){
         double y = 0;
 
         y += quadrantY * (Quadrant.QUADRANTSIZE * CELLSIZE);
@@ -48,12 +41,29 @@ public class Screen {
         return y;
     }
 
-    public void setCenterOfScreen(){
-        StdDraw.setXscale(centerOfScreen - .5, centerOfScreen + .5);
+    private void setCenterOfScreen(){
+        centerOfScreenX = game.character.pos.getX();
+        centerOfScreenY = game.character.pos.getY();
+
+        StdDraw.setXscale(centerOfScreenX - VIEWSIZE, centerOfScreenX + VIEWSIZE);
+        StdDraw.setYscale(centerOfScreenY - VIEWSIZE, centerOfScreenY + VIEWSIZE);
     }
+
+
+    //endregion
 
     //==================================================================================================================
 
+    public void run(){
+        int count = 0;
+        while(true){
+            count++;
+            //if(count % 60 == 0) System.out.println(count);
+            game.update();
+            setCenterOfScreen();
+            draw();
+        }
+    }
     //draws the entire screen
     private void draw() {
         StdDraw.clear();
@@ -75,16 +85,11 @@ public class Screen {
                     }
                 }
             }
-            else{
-                //for every Cell in the Quadrant - draw the Cell as black
-                for (int x = 0 ; x < quadrant.cells.length ; x++) {
-                    for (int y = 0 ; y < quadrant.cells[x].length ; y++) {
-
-                        drawCell(getScreenX(quadrant.x, x), getScreenY(quadrant.y, y), new Color(0));
-                    }
-                }
-            }
         }
+
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.line(0,0,0,1);
+        StdDraw.line(0,0,1,0);
 
         game.character.draw();
 

@@ -1,9 +1,9 @@
 import java.awt.*;
 
 public class Element {
-    private String type;
-    private String state;
-    private Color color;
+    private String type;   //the Elemental type of the Cell
+    private String state;   //SOLID -- LIQUID -- GAS -- NONE
+    private Color color;   //the color of the Element
 
     public Element() {
         this.type = "NONE";
@@ -33,6 +33,10 @@ public class Element {
 
     public Color getColor(){
         return color;
+    }
+
+    public String getState() {
+        return state;
     }
 
 

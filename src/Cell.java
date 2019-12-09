@@ -38,6 +38,10 @@ public class Cell {
         return element.getColor();
     }
 
+    public String getState(){
+        return element.getState();
+    }
+
     public int getX() {
         return x;
     }
