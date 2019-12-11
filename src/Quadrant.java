@@ -4,12 +4,14 @@ public class Quadrant implements Comparable<Quadrant>{
     public Cell[][] cells;//stores the cells that are found in this quadrant
     public static final int QUADRANTSIZE = 10;//the the number of Cells that this quadrant holds in one dimension
     private boolean active;//whether or not this quadrant should be updated
+    public boolean filled;//whether this quadrant has been created properly or not
 
     public Quadrant(int xPos, int yPos) {
         this.x = xPos;
         this.y = yPos;
         cells = new Cell[QUADRANTSIZE][QUADRANTSIZE];
         active = false;
+        filled = false;
 
         fillCells();
     }
@@ -41,6 +43,8 @@ public class Quadrant implements Comparable<Quadrant>{
                 value.setElement(element.clone());
             }
         }
+
+        filled = true;
     }
 
     // TODO: 12/9/2019 fix this 
@@ -83,9 +87,10 @@ public class Quadrant implements Comparable<Quadrant>{
         }
     }
 
+    //sets the top level of dirt to grass
     public void setTopLevelToGrass(){
 
-        //for every cell - if it is on top - set to grass
+        //for every cell - if Dirt is on top - set to Grass
         for (Cell[] cell : cells) {
             for (int y = cell.length - 1 ; y >= 0 ; y--) {
 
@@ -97,8 +102,9 @@ public class Quadrant implements Comparable<Quadrant>{
         }
     }
 
+    //finds the top level of Dirt or Grass and fills in below with Dirt
     public void fillBelowWithDirt(){
-        //for every cell - if it is on top - start setting the ones below to dirt
+        //for every cell - if it is on top
         for (Cell[] cell : cells) {
             boolean foundDirt = false;
             for (int y = cell.length - 1 ; y >= 0 ; y--) {
@@ -112,6 +118,8 @@ public class Quadrant implements Comparable<Quadrant>{
                 }
             }
         }
+
+        filled = true;
     }
 
     //==================================================================================================================

@@ -87,9 +87,12 @@ public class Screen {
             }
         }
 
+        /*
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.line(0,0,0,1);
         StdDraw.line(0,0,1,0);
+
+        // */
 
         game.character.draw();
 

@@ -11,14 +11,14 @@ public class Game {
         quadrants = new ArrayList<>();
         character = new Character(.5,.8);
 
-        addLotsOfQuadrants(-1,-3,5,2);// TODO: 12/8/2019 something broken with either this or isActive()
+        addLotsOfQuadrants(-20,-3,20,2);// TODO: 12/8/2019 something broken with either this or isActive()
 
         int elevation = 5;
-        for (int i = 0 ; i < 4 ; i++) {
+        for (int i = -20 ; i <= 20 ; i++) {
             elevation = setTopLevelOfGroundRight(i,0,elevation);
-            getQuadrant(i, 0).fillBelowWithDirt();
-            getQuadrant(i, 0).setTopLevelToGrass();
         }
+
+        fillDirtBelowTop(true);
     }
 
     //==================================================================================================================
@@ -197,6 +197,7 @@ public class Game {
             }
 
             quadrant = getQuadrant(quadrantX, quadrantY + deltaY);
+            quadrant.filled = true;
 
             quadrant.cells[x][cellY].setElement(new Dirt());
 
@@ -211,6 +212,7 @@ public class Game {
 
     //==================================================================================================================
 
+    //if the Cell below the Character is Solid
     public boolean isCharacterTouchingSolidCell(){
         return getCellBelowCharacter(Screen.CELLSIZE / 2).getState().equals("SOLID") ||
                getCellBelowCharacter(-Screen.CELLSIZE / 2).getState().equals("SOLID");
@@ -219,6 +221,36 @@ public class Game {
     //adds gravity to the Character
     public void addCharacterGravity(){
         character.vel.addY(GRAVITY);
+    }
+
+    //fills all the Cells
+    public void fillDirtBelowTop(boolean addingGrass){
+        sort();
+        int xSave = getQuadrant(quadrants.size() - 1).x;
+        boolean foundFilled = false;
+
+        for (int i = quadrants.size() - 1 ; i >= 0 ; i--) {
+            Quadrant quadrant = getQuadrant(i);
+
+            if(quadrant.filled){
+                quadrant.fillBelowWithDirt();
+
+                if(addingGrass)
+                    quadrant.setTopLevelToGrass();
+
+                foundFilled = true;
+                continue;
+            }
+
+            if(xSave != quadrant.x) {
+                foundFilled = false;
+                xSave = quadrant.x;
+            }
+
+            if(foundFilled){
+                quadrant.setAllElements(new Dirt());
+            }
+        }
     }
 
     //updates the game
@@ -245,7 +277,5 @@ public class Game {
         }
 
         character.update();
-
-        System.out.println(getCellBelowCharacter(0));
     }
 }
