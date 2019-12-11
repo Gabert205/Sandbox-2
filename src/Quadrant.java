@@ -43,12 +43,10 @@ public class Quadrant implements Comparable<Quadrant>{
         }
     }
 
+    // TODO: 12/9/2019 fix this 
     //checks to see if the cell should be active
     public boolean isActive(){
-        if(Screen.centerOfScreenX - 2 * Screen.VIEWSIZE <= x * QUADRANTSIZE * Screen.CELLSIZE &&
-           Screen.centerOfScreenX + Screen.VIEWSIZE >= x * QUADRANTSIZE* Screen.CELLSIZE )
-            return true;
-        else return false;
+        return true;
     }
 
 
@@ -94,6 +92,23 @@ public class Quadrant implements Comparable<Quadrant>{
                 if (cell[y].getElementType().equals("DIRT")) {
                     cell[y].setElement(new Grass());
                     break;
+                }
+            }
+        }
+    }
+
+    public void fillBelowWithDirt(){
+        //for every cell - if it is on top - start setting the ones below to dirt
+        for (Cell[] cell : cells) {
+            boolean foundDirt = false;
+            for (int y = cell.length - 1 ; y >= 0 ; y--) {
+
+                if(foundDirt){
+                    cell[y].setElement(new Dirt());
+                }
+
+                if (cell[y].getElementType().equals("DIRT") || cell[y].getElementType().equals("GRASS")) {
+                    foundDirt = true;
                 }
             }
         }

@@ -11,9 +11,14 @@ public class Game {
         quadrants = new ArrayList<>();
         character = new Character(.5,.8);
 
-        addLotsOfQuadrants(-10,-10,10,10);// TODO: 12/8/2019 something broken with either this or isActive() 
+        addLotsOfQuadrants(-1,-3,5,2);// TODO: 12/8/2019 something broken with either this or isActive()
 
-        setTopLevelOfGroundRight(0,0,0);
+        int elevation = 5;
+        for (int i = 0 ; i < 4 ; i++) {
+            elevation = setTopLevelOfGroundRight(i,0,elevation);
+            getQuadrant(i, 0).fillBelowWithDirt();
+            getQuadrant(i, 0).setTopLevelToGrass();
+        }
     }
 
     //==================================================================================================================
@@ -113,7 +118,6 @@ public class Game {
         else {
             quadrant = getQuadrant(getQuadrantPosition(character.pos.getX() + deltaX), character.getQuadrantY());
         }
-
         return quadrant.getCell(getCellPosition(character.pos.getX() + deltaX) , (character.getCellY() + 9) % 10);
     }
 
@@ -174,28 +178,32 @@ public class Game {
         Collections.sort(quadrants);
     }
 
-    private void setTopLevelOfGroundRight(int quadrantX, int quadrantY, int cellY){
+    private int setTopLevelOfGroundRight(int quadrantX, int quadrantY, int cellY){
 
         Quadrant quadrant = getQuadrant(quadrantX, quadrantY);
 
-
+        int deltaY = 0;
         for (int x = 0 ; x < quadrant.cells.length ; x++) {
+
+            while (cellY < 0 || cellY >= 10) {
+
+                if (cellY < 0) {
+                    deltaY--;
+                    cellY += 10;
+                } else if (cellY >= 10) {
+                    deltaY++;
+                    cellY -= 10;
+                }
+            }
+
+            quadrant = getQuadrant(quadrantX, quadrantY + deltaY);
+
             quadrant.cells[x][cellY].setElement(new Dirt());
 
-            cellY += (int) ( Math.random() * 5 - 2);
-
-            /*
-            if(cellY < 0){
-                cellY += 10;
-                quadrant = getQuadrant(quadrantX, --quadrantY);
-            }
-            else if(cellY > 9){
-                cellY -= 10;
-                quadrant = getQuadrant(quadrantX, ++quadrantY);
-            }
-
-             */
+            cellY += (int) ( Math.random() * 4 - 2);
         }
+
+        return cellY + deltaY * 10;
     }
 
 
@@ -237,5 +245,7 @@ public class Game {
         }
 
         character.update();
+
+        System.out.println(getCellBelowCharacter(0));
     }
 }
