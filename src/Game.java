@@ -11,10 +11,10 @@ public class Game {
         quadrants = new ArrayList<>();
         character = new Character(.5,.8);
 
-        addLotsOfQuadrants(-20,-3,20,2);// TODO: 12/8/2019 something broken with either this or isActive()
+        addLotsOfQuadrants(-2,-3,2,2);// TODO: 12/8/2019 something broken with either this or isActive()
 
         int elevation = 5;
-        for (int i = -20 ; i <= 20 ; i++) {
+        for (int i = -2 ; i <= 2 ; i++) {
             elevation = setTopLevelOfGroundRight(i,0,elevation);
         }
 
@@ -121,7 +121,7 @@ public class Game {
         return quadrant.getCell(getCellPosition(character.pos.getX() + deltaX) , (character.getCellY() + 9) % 10);
     }
 
-    //UNTESTED
+    //UNTESTED - DEFIANTLY DOESN'T WORK
     //returns the Cell that is left of the character
     public Cell getCellLeftOfCharacter(){
 
@@ -129,16 +129,15 @@ public class Game {
 
         //if the Cell below the Character is in a different Quadrant than the one the Character is in
         if(character.getCellX() - 1 < 0){
-            quadrant = getQuadrant(character.getQuadrantX() - 1, character.getQuadrantY());
+            quadrant = getQuadrant(getQuadrantPosition(character.pos.getX()), character.getQuadrantY() - 1);
         }
         else {
-            quadrant = getQuadrant(character.getQuadrantX(), character.getQuadrantY());
+            quadrant = getQuadrant(getQuadrantPosition(character.pos.getX()), character.getQuadrantY());
         }
-
-        return quadrant.getCell((character.getCellX() + 9) % 10 , character.getCellY());
+        return quadrant.getCell(getCellPosition((character.pos.getX() + 9) % 10 ) , character.getCellY());
     }
 
-    //UNTESTED
+    //UNTESTED - DEFIANTLY DOESN'T WORK
     //returns the Cell that is right of the character
     public Cell getCellRightOfCharacter(){
 
@@ -178,19 +177,23 @@ public class Game {
         Collections.sort(quadrants);
     }
 
+    //sets the top level of ground to Dirt starting from the Right
     private int setTopLevelOfGroundRight(int quadrantX, int quadrantY, int cellY){
 
         Quadrant quadrant = getQuadrant(quadrantX, quadrantY);
 
         int deltaY = 0;
+
+        //for every cell in the x direction
         for (int x = 0 ; x < quadrant.cells.length ; x++) {
 
+            //if the cellY is too high or low, change it to a usable number
             while (cellY < 0 || cellY >= 10) {
 
                 if (cellY < 0) {
                     deltaY--;
                     cellY += 10;
-                } else if (cellY >= 10) {
+                } else {
                     deltaY++;
                     cellY -= 10;
                 }
@@ -277,5 +280,7 @@ public class Game {
         }
 
         character.update();
+
+        System.out.println(getCellLeftOfCharacter());
     }
 }
